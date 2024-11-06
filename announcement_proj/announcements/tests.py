@@ -39,7 +39,7 @@ class AnnouncementModelTest(TestCase):
 
 class AnnouncementViewsTest(TestCase):
     def setUp(self):
-        # Create test data
+         # Create test data
         self.user = User.objects.create_user(username="testuser", password="password")
         self.section = Section.objects.create(name="Test Section")
         self.announcement = Announcement.objects.create(
@@ -47,15 +47,14 @@ class AnnouncementViewsTest(TestCase):
             content="This is the first test announcement.",
             topic="Urgent",
             scheduled_time=timezone.now(),
-            author=self.user
+            author=self.user,
+            sent=True  # Set sent=True to ensure it appears in the list view
         )
         self.announcement.sections.add(self.section)
         self.client.login(username="testuser", password="password")
-
+        
     def test_announcement_list_view(self):
-        """Test that the announcement list view returns the correct announcements."""
         response = self.client.get(reverse("announcement_list"))
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Announcement 1")
 
     def test_announcement_detail_view(self):
