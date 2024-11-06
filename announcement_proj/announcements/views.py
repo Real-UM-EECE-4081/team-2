@@ -11,7 +11,12 @@ def announcement_list(request):
 def announcement_detail(request, id):
     announcement = get_object_or_404(Announcement, id=id)
     comments = announcement.comments.all()
-    return render(request, 'announcements/announcement_detail.html', {'announcement': announcement, 'comments': comments})
+    form = CommentForm()  # Add this line to pass the empty form to the template
+    return render(request, 'announcements/announcement_detail.html', {
+        'announcement': announcement,
+        'comments': comments,
+        'form': form  # Include the form in the context
+    })
 
 # View to add a comment
 def add_comment(request, id):
@@ -25,6 +30,9 @@ def add_comment(request, id):
             comment.save()
             return redirect('announcement_detail', id=announcement.id)
     else:
-        form = CommentForm()
-    return render(request, 'announcements/add_comment.html', {'form': form})
-
+        form = CommentForm()  # This renders an empty form on GET requests
+    return render(request, 'announcements/announcement_detail.html', {
+        'announcement': announcement,
+        'comments': announcement.comments.all(),
+        'form': form
+    })
