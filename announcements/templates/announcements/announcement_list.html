@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Announcements</title>
+</head>
+<body>
+    <h1>Announcements</h1>
+    {% for announcement in announcements %}
+        <h2><a href="{{ announcement.id }}/">{{ announcement.title }}</a></h2>
+        <p>{{ announcement.content|truncatewords:20 }}</p>
+    {% endfor %}
+</body>
+</html>
